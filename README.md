@@ -39,3 +39,4 @@ much of the scaffolding/utility code was based on assignments from [MIT's Introd
 
 ## ideas for further experiments
 - try a harder dataset than MNIST to see if perf gap widens between DiT and UNet
+- try training the model to do ε-prediction (diffusion) rather than velocity prediction (flow matching)
