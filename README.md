@@ -15,6 +15,7 @@ training run and example generations can be seen in `experiment.ipynb`
 - upon visual inspection, the mamba generated samples are noticably worse than the other models, they have more artifacts and the digits are less clear
 - DiT and UNet seem pretty comparable in generation quality
 - interesting to note that the DiT (16.8M params) has 14x more parameters than the UNet (1.2M params) but training speed is only 5% slower
+- interesting that UNet performance is very close to DiT despite using 14x less parameters
 
 avg loss of final 500 steps:
 - UNet: 131.15
@@ -36,3 +37,5 @@ code organization:
 much of the scaffolding/utility code was based on assignments from [MIT's Introduction to Flow Matching and Diffusion Models course](https://diffusion.csail.mit.edu/)
 - credit to [Peter E. Holderrieth](https://www.peterholderrieth.com/) and [Ezra Erives](https://eerives.me/)
 
+## ideas for further experiments
+- try a harder dataset than MNIST to see if perf gap widens between DiT and UNet
