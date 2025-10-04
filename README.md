@@ -2,7 +2,7 @@
 
 Goal: compare different architectures on generating images from the MNIST dataset using flow matching
 
-take the scaffolding code from [MIT's Introduction to Flow Matching and Diffusion Models course](https://diffusion.csail.mit.edu/)
+scaffolding/utility code from [MIT's Introduction to Flow Matching and Diffusion Models course](https://diffusion.csail.mit.edu/)
 - credit to [Peter E. Holderrieth](https://www.peterholderrieth.com/) and [Ezra Erives](https://eerives.me/)
 
 architectures to compare:
