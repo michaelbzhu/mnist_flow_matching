@@ -8,6 +8,9 @@ architectures to compare:
 - Mamba - `mamba.py`
 
 ## Results
+
+![](https://github.com/michaelbzhu/mnist_flow_matching/blob/main/mnist-generations-comparison.png?raw=true)
+
 training run and example generations can be seen in `experiment.ipynb`
 - upon visual inspection, the mamba generated samples are noticably worse than the other models, they have more artifacts and the digits are less clear
 - DiT and UNet seem pretty comparable in generation quality
