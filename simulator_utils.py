@@ -19,6 +19,30 @@ class ODE(ABC):
         """
         pass
 
+class SDE(ABC):
+    @abstractmethod
+    def drift_coefficient(self, xt: torch.Tensor, t: torch.Tensor, **kwargs) -> torch.Tensor:
+        """
+        Returns the drift coefficient of the ODE.
+        Args:
+            - xt: state at time t, shape (bs, c, h, w)
+            - t: time, shape (bs, 1, 1, 1)
+        Returns:
+            - drift_coefficient: shape (bs, c, h, w)
+        """
+        pass
+
+    @abstractmethod
+    def diffusion_coefficient(self, xt: torch.Tensor, t: torch.Tensor, **kwargs) -> torch.Tensor:
+        """
+        Returns the diffusion coefficient of the ODE.
+        Args:
+            - xt: state at time t, shape (bs, c, h, w)
+            - t: time, shape (bs, 1, 1, 1)
+        Returns:
+            - diffusion_coefficient: shape (bs, c, h, w)
+        """
+        pass
 
 class Simulator(ABC):
     @abstractmethod
@@ -78,6 +102,12 @@ class EulerSimulator(Simulator):
     def step(self, xt: torch.Tensor, t: torch.Tensor, h: torch.Tensor, **kwargs):
         return xt + self.ode.drift_coefficient(xt, t, **kwargs) * h
 
+class EulerMaruyamaSimulator(Simulator):
+    def __init__(self, sde: SDE):
+        self.sde = sde
+        
+    def step(self, xt: torch.Tensor, t: torch.Tensor, h: torch.Tensor, **kwargs):
+        return xt + self.sde.drift_coefficient(xt,t, **kwargs) * h + self.sde.diffusion_coefficient(xt,t, **kwargs) * torch.sqrt(h) * torch.randn_like(xt)
 
 class CFGVectorFieldODE(ODE):
     def __init__(self, net: ConditionalVectorField, guidance_scale: float = 1.0):

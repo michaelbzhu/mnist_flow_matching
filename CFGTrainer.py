@@ -87,11 +87,14 @@ class CFGTrainer(Trainer):
         y[xi < self.eta] = 10.0
 
         # Step 3: Sample t and x
-        t = torch.rand(batch_size, 1, 1, 1).to(z)  # (bs, 1, 1, 1)
-        x = self.path.sample_conditional_path(z, t)  # (bs, 1, 32, 32)
+        t = torch.rand(batch_size, 1, 1, 1, device=z.device)
+        alpha_t = self.path.alpha(t)
+        beta_t  = self.path.beta(t)
+        eps = torch.randn_like(z)
+        x_t = alpha_t * z + beta_t * eps
 
         # Step 4: Regress and output loss
-        ut_theta = self.model(x, t, y)  # (bs, 1, 32, 32)
-        ut_ref = self.path.conditional_vector_field(x, z, t)  # (bs, 1, 32, 32)
-        error = torch.einsum("bchw -> b", torch.square(ut_theta - ut_ref))  # (bs,)
-        return torch.mean(error)
+        predicted_error = self.model(x_t, t, y)  # (bs, 1, 32, 32)
+        # loss = predicted_error - eps
+        loss = torch.mean((predicted_error - eps).pow(2))
+        return loss
